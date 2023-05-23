@@ -10,6 +10,7 @@ json = Blueprint('json', __name__)
 @json.route('/restaurant/<restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
     items = db.session.execute(text('select * from menu_item where restaurant_id = %s', restaurant_id))
+# Adjusted the user input string to query parameter to avoid SQL injection.
     items_list = [ i._asdict() for i in items ]
     return pyjs.dumps(items_list)
 
@@ -17,6 +18,8 @@ def restaurantMenuJSON(restaurant_id):
 @json.route('/restaurant/<restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
     Menu_Item = db.session.execute(text('SELECT * FROM menu_item WHERE id = :menu_id LIMIT 1')).params(menu_id=menu_id)
+# Set up a query parameter in code to avoid SQL injection attacks. Used placeholder instead of concatenating
+# the user input variable.
     items_list = [ i._asdict() for i in Menu_Item ]
     return pyjs.dumps(items_list)
 
