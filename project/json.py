@@ -9,7 +9,7 @@ json = Blueprint('json', __name__)
 #JSON APIs to view Restaurant Information
 @json.route('/restaurant/<restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
-    items = db.session.execute(text('SELECT * FROM menu_item WHERE restaurant_id = %s', restaurant_id))
+    items = db.session.execute(text('SELECT * FROM menu_item WHERE restaurant_id = %d', restaurant_id))
 # Adjusted the user input string to query parameter to avoid SQL injection.
     items_list = [ i._asdict() for i in items ]
     return pyjs.dumps(items_list)
