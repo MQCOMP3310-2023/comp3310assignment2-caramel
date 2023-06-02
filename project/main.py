@@ -52,11 +52,37 @@ def deleteRestaurant(restaurant_id):
 #Show a restaurant menu
 @main.route('/restaurant/<int:restaurant_id>/')
 @main.route('/restaurant/<int:restaurant_id>/menu/')
+
+
 def showMenu(restaurant_id):
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     items = db.session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
     return render_template('menu.html', items = items, restaurant = restaurant)
-     
+
+@main.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q')  # Get the search query from the request URL parameters
+
+    # Query the database for matching restaurants and menu items
+    restaurants = db.session.query(Restaurant).filter(Restaurant.name.ilike(f'%{query}%')).order_by(asc(Restaurant.name)).all()
+    menu_items = db.session.query(MenuItem).filter(MenuItem.name.ilike(f'%{query}%')).all()
+
+    # Render the search results template with the matching restaurants and menu items
+    return render_template('search_results.html', query=query, restaurants=restaurants, menu_items=menu_items)
+
+
+# Show a restaurant
+@main.route('/restaurant/<int:restaurant_id>/')
+def showRestaurant(restaurant_id):
+    restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).first()
+    return render_template('restaurant.html', restaurant=restaurant)
+
+
+# Show a menu item
+@main.route('/menu/<int:menu_item_id>/')
+def showMenuItem(menu_item_id):
+    menu_item = db.session.query(MenuItem).filter_by(id=menu_item_id).first()
+    return render_template('menu_item.html', menu_item=menu_item)
 
 
 #Create a new menu item

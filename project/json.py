@@ -18,8 +18,7 @@ def restaurantMenuJSON(restaurant_id):
 @json.route('/restaurant/<restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
     Menu_Item = db.session.execute(text('SELECT * FROM menu_item WHERE id = :menu_id LIMIT 1')).params(menu_id=menu_id)
-# Set up a query parameter in code to avoid SQL injection attacks. Used placeholder instead of concatenating
-# the user input variable.
+# Set up a query parameter in code to avoid SQL injection attacks. 
     items_list = [ i._asdict() for i in Menu_Item ]
     return pyjs.dumps(items_list)
 
