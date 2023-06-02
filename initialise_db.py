@@ -1,5 +1,5 @@
 from project import db, create_app, models
-from project.models import Restaurant, MenuItem, User
+from project.models import Restaurant, MenuItem
 
 def populate_db():
     #Menu for UrbanBurger
