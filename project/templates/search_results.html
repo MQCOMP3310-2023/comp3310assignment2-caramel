@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<h2>Search Results for "{{ query }}":</h2>
+
+<!-- For restaurants -->
+{% for restaurant in restaurants %}
+    <a href="{{ url_for('main.showRestaurant', restaurant_id=restaurant.id) }}">{{ restaurant.name }}</a>
+{% endfor %}
+
+<!-- For menu items -->
+{% for menu_item in menu_items %}
+    <a href="{{ url_for('main.showMenuItem', menu_item_id=menu_item.id) }}">{{ menu_item.name }}</a>
+{% endfor %}
+
+
+{% endblock %}

@@ -16,6 +16,13 @@
 		</div>
 	</div>
 
+	<div>
+		<form action="{{ url_for('main.search') }}" method="GET">
+			<input type="text" name="q" placeholder="Search here">
+			<button type="submit">Search</button>
+		  </form>
+	</div>
+
 <div class = 'flash'>
    {% with messages = get_flashed_messages() %}
       {% if messages %}
