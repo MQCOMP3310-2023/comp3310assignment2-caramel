@@ -2,7 +2,15 @@ from flask import Blueprint, jsonify
 from .models import Restaurant, MenuItem
 from sqlalchemy import text
 from . import db
-import json as pyjs
+import json as pyjs     
+# OWASP top 10 vulnerability number 6. Vulnerable and Outdated Components
+   # these import statemnts demonstrate a vulnerability in that the
+#application is reliant on thid party libaries in order to function. 
+#if these are not updated or old and outdated versions are used then this may present a significant risk to the application.
+# Therfore, It is essential to make sure that these imported libaries are up to date as they present a significant, yet unobvious vulnerability to the system. 
+
+
+
 
 json = Blueprint('json', __name__)
 
