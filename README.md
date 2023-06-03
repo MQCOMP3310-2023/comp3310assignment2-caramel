@@ -64,5 +64,6 @@ You can see that the database comes prepopulated with some restaurants and some 
 You can run the website by typing:
 
 - python run.py
+- python3 run.py
 
 You can now browse to the url http://localhost:8000/ to view the website.
