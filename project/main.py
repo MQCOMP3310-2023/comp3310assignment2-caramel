@@ -63,6 +63,10 @@ def showMenu(restaurant_id):
 def search():
     query = request.args.get('q')  # Get the search query from the request URL parameters
 
+    if not query:
+        flash('Please enter a search query')
+        return redirect(url_for('main.showRestaurants'))
+    
     # Query the database for matching restaurants and menu items
     restaurants = db.session.query(Restaurant).filter(Restaurant.name.ilike(f'%{query}%')).order_by(asc(Restaurant.name)).all()
     menu_items = db.session.query(MenuItem).filter(MenuItem.name.ilike(f'%{query}%')).all()
