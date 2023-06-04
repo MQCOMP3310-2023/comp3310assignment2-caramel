@@ -1,5 +1,5 @@
 from project import db, create_app, models
-from project.models import Restaurant, MenuItem
+from project.models import Restaurant, MenuItem, User
 
 def populate_db():
     #Menu for UrbanBurger
@@ -200,10 +200,12 @@ def populate_db():
     session.commit()
     
     menuItem2 = MenuItem(name = "Cachapa", description = "Golden brown, corn-based venezuelan pancake; usually stuffed with queso telita or queso de mano, and possibly lechon. ", price = "", course = "", restaurant = restaurant1)
-    
     session.add(menuItem2)
     session.commit()
     
+    testUser = User(username = "test", email = "test@test.com", password = "test", password_hash = "test")
+    session.add(testUser)
+    session.commit()
     print("added menu items!")
 
 

@@ -3,6 +3,17 @@ This is the code for Assignment2 for COMP3310 S1 2023.
 
 This codebase implements a basic restaurant listing web application using python and the flask framework. Your task will be to modify the basic site to add new features focussing on secure application development principles.
 
+# BEFORE MARKING PLEASE READ (VERY IMPORTANT)
+In order to get the website working, you will need to install the following python modules:
+
+- Flask-WTF
+- WTForms
+
+This can be done by running the following command from the command lime (cmd):
+- pip install Flask-WTF WTForms
+
+WITHOUT ADDING THESE MODULES, THE WEBSITE WILL NOT RUN.
+
 # Setup
 
 To setup the basic website you will need to have the following installed:
