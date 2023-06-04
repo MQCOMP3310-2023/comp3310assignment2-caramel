@@ -10,7 +10,7 @@
 
 <!-- For menu items -->
 {% for menu_item in menu_items %}
-    <a href="{{ url_for('main.showMenuItem', menu_item_id=menu_item.id) }}">{{ menu_item.name }}</a>
+    <a href="{{ url_for('main.showRestaurant', restaurant_id=menu_item.restaurant_id) }}">{{ menu_item.name }}</a>
 {% endfor %}
 
 
