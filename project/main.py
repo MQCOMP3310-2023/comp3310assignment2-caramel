@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from .models import Restaurant, MenuItem, User
 from sqlalchemy import asc
 from . import db
-from wtforms import StringField, validators
 from .forms import LoginForm, RegisterForm
 from flask_login import login_user, current_user, login_required, logout_user
 
@@ -23,6 +22,7 @@ def showRestaurants():
 
 #Create a new restaurant
 @main.route('/restaurant/new/', methods=['GET','POST'])
+@login_required
 def newRestaurant():
    #  logging.info( "adding resturant" )
   if request.method == 'POST':
@@ -36,6 +36,7 @@ def newRestaurant():
 
 #Edit a restaurant
 @main.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editRestaurant(restaurant_id):
   #  logging.info( "editing resturant: " + resturant_id )
   editedRestaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
@@ -50,6 +51,7 @@ def editRestaurant(restaurant_id):
 
 #Delete a restaurant
 @main.route('/restaurant/<int:restaurant_id>/delete/', methods = ['GET','POST'])
+@login_required
 def deleteRestaurant(restaurant_id):
   restaurantToDelete = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
@@ -111,6 +113,7 @@ def showMenuItem(menu_item_id):
 
 #Create a new menu item
 @main.route('/restaurant/<int:restaurant_id>/menu/new/',methods=['GET','POST'])
+@login_required
 def newMenuItem(restaurant_id):
   restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
@@ -124,6 +127,7 @@ def newMenuItem(restaurant_id):
 
 #Edit a menu item
 @main.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET','POST'])
+@login_required
 def editMenuItem(restaurant_id, menu_id):
 
     editedItem = db.session.query(MenuItem).filter_by(id = menu_id).one()
@@ -146,7 +150,9 @@ def editMenuItem(restaurant_id, menu_id):
 
 
 #Delete a menu item
+
 @main.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods = ['GET','POST'])
+@login_required
 def deleteMenuItem(restaurant_id,menu_id):
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     itemToDelete = db.session.query(MenuItem).filter_by(id = menu_id).one() 
@@ -182,3 +188,9 @@ def login():
             redirect_url = request.args.get('next') or url_for('main.showRestaurants')
             return redirect(redirect_url)
     return render_template('login.html', form=form)
+
+# Source: https://github.com/marcelomd/flask-wtf-login-example/blob/master/app/views.py
+@main.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.showRestaurants'))
