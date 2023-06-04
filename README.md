@@ -8,7 +8,7 @@ WITHOUT ADDING THESE MODULES, THE WEBSITE WILL NOT RUN.
 This can be done by running the following command from the command line (cmd):
 - pip install Flask-WTF WTForms
 
-After the modules are installed, initialise the database by running the 'initialise_db.py' file.
+After the modules are installed, initialise the database by running the './initialise_db.py' file.
 
 Then, the website can be started by running the './run.py' file.
 
