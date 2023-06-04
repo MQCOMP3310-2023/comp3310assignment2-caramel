@@ -1,4 +1,5 @@
-from project import db, create_app, models
+# Vulnerability Four: Removed unused dependencies and modules
+from project import db, create_app
 from project.models import Restaurant, MenuItem, User
 
 def populate_db():

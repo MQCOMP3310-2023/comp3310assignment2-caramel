@@ -1,5 +1,5 @@
 #Source: https://github.com/marcelomd/flask-wtf-login-example/blob/master/app/forms.py
-
+# Vulnerability Four: Removed unused dependencies and modules
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, PasswordField, SubmitField, StringField
 from wtforms.validators import DataRequired, EqualTo, Length

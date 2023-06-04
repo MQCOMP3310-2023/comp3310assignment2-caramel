@@ -1,8 +1,9 @@
+# Vulnerability Four: Removed unused dependencies and modules
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import secrets
-# init SQLAlchemy so we can use it later in our models
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -11,6 +12,7 @@ login_manager.login_view = 'main.login'
 def create_app():
     app = Flask(__name__)
 
+    # Vulnerability Three: Removed hard-coded secret key
     app.config['SECRET_KEY'] = secrets.token_hex(32)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restaurantmenu.db'
 

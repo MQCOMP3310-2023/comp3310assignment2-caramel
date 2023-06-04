@@ -1,3 +1,4 @@
+# Vulnerability Four: Removed unused dependencies and modules
 from flask import Blueprint, render_template, request, flash, redirect, url_for, g
 from .models import Restaurant, MenuItem, User
 from sqlalchemy import asc
@@ -15,7 +16,7 @@ def before_request():
 #Show all restaurants
 @main.route('/')
 @main.route('/restaurant/')
-def showRestaurants():
+def showRestaurants(): # Sonarlint Analysis
    #  logging.info( "Show resturants" )
   restaurants = db.session.query(Restaurant).order_by(asc(Restaurant.name))
   return render_template('restaurants.html', restaurants = restaurants)
@@ -23,7 +24,7 @@ def showRestaurants():
 #Create a new restaurant
 @main.route('/restaurant/new/', methods=['GET','POST'])
 @login_required
-def newRestaurant():
+def newRestaurant(): # Sonarlint Analysis
    #  logging.info( "adding resturant" )
   if request.method == 'POST':
       newRestaurant = Restaurant(name = request.form['name'])
@@ -37,12 +38,13 @@ def newRestaurant():
 #Edit a restaurant
 @main.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
 @login_required
-def editRestaurant(restaurant_id):
+def editRestaurant(restaurant_id): # Sonarlint Analysis
   #  logging.info( "editing resturant: " + resturant_id )
   editedRestaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
       if request.form['name']:
         editedRestaurant.name = request.form['name']
+        db.session.commit()
         flash('Restaurant Successfully Edited %s' % editedRestaurant.name)
         return redirect(url_for('main.showRestaurants'))
   else:
@@ -52,7 +54,7 @@ def editRestaurant(restaurant_id):
 #Delete a restaurant
 @main.route('/restaurant/<int:restaurant_id>/delete/', methods = ['GET','POST'])
 @login_required
-def deleteRestaurant(restaurant_id):
+def deleteRestaurant(restaurant_id): # Sonarlint Analysis
   restaurantToDelete = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
     #  logging.info( "deleting resturant: "+ resturant_id )
@@ -68,7 +70,7 @@ def deleteRestaurant(restaurant_id):
 @main.route('/restaurant/<int:restaurant_id>/menu/')
 
 
-def showMenu(restaurant_id):
+def showMenu(restaurant_id): # Sonarlint Analysis
     #  logging.info( "Show Menu" )
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     items = db.session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
@@ -99,14 +101,14 @@ def search():
 
 # Show a restaurant
 @main.route('/restaurant/<int:restaurant_id>/')
-def showRestaurant(restaurant_id):
+def showRestaurant(restaurant_id): # Sonarlint Analysis
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).first()
     return render_template('restaurant.html', restaurant=restaurant)
 
 
 # Show a menu item
 @main.route('/menu/<int:menu_item_id>/')
-def showMenuItem(menu_item_id):
+def showMenuItem(menu_item_id): # Sonarlint Analysis
     menu_item = db.session.query(MenuItem).filter_by(id=menu_item_id).first()
     return render_template('menu_item.html', menu_item=menu_item)
 
@@ -114,7 +116,7 @@ def showMenuItem(menu_item_id):
 #Create a new menu item
 @main.route('/restaurant/<int:restaurant_id>/menu/new/',methods=['GET','POST'])
 @login_required
-def newMenuItem(restaurant_id):
+def newMenuItem(restaurant_id): # Sonarlint Analysis
   restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
       newItem = MenuItem(name = request.form['name'], description = request.form['description'], price = request.form['price'], course = request.form['course'], restaurant_id = restaurant_id)
@@ -128,8 +130,7 @@ def newMenuItem(restaurant_id):
 #Edit a menu item
 @main.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/edit', methods=['GET','POST'])
 @login_required
-def editMenuItem(restaurant_id, menu_id):
-
+def editMenuItem(restaurant_id, menu_id): # Sonarlint Analysis
     editedItem = db.session.query(MenuItem).filter_by(id = menu_id).one()
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     if request.method == 'POST':
@@ -153,7 +154,7 @@ def editMenuItem(restaurant_id, menu_id):
 
 @main.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/delete', methods = ['GET','POST'])
 @login_required
-def deleteMenuItem(restaurant_id,menu_id):
+def deleteMenuItem(restaurant_id,menu_id): # Sonarlint Analysis
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     itemToDelete = db.session.query(MenuItem).filter_by(id = menu_id).one() 
     if request.method == 'POST':
