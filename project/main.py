@@ -1,9 +1,17 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import Restaurant, MenuItem
+from flask import Blueprint, render_template, request, flash, redirect, url_for, g
+from .models import Restaurant, MenuItem, User
 from sqlalchemy import asc
 from . import db
+from wtforms import StringField, validators
+from .forms import LoginForm, RegisterForm
+from flask_login import login_user, current_user, login_required, logout_user
 
 main = Blueprint('main', __name__)
+
+# Source: https://github.com/marcelomd/flask-wtf-login-example/blob/master/app/views.py
+@main.before_request
+def before_request():
+    g.user = current_user
 
 #Show all restaurants
 @main.route('/')
@@ -149,3 +157,28 @@ def deleteMenuItem(restaurant_id,menu_id):
         return redirect(url_for('main.showMenu', restaurant_id = restaurant_id))
     else:
         return render_template('deleteMenuItem.html', item = itemToDelete)
+
+# Source: https://github.com/marcelomd/flask-wtf-login-example/blob/master/app/views.py
+@main.route('/register', methods=["GET", "POST"])
+def register():
+    form = RegisterForm(request.form, csrf_enabled=False)
+    if form.validate():
+        new_user = User(email=form.email.data,
+                username=form.username.data,
+                password=form.password.data)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('main.login'))
+    return render_template('register.html', form=form)
+
+# Source: https://github.com/marcelomd/flask-wtf-login-example/blob/master/app/views.py
+@main.route('/login', methods=["GET", "POST"])
+def login():
+    form = LoginForm(request.form)
+    if form.validate():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            redirect_url = request.args.get('next') or url_for('main.showRestaurants')
+            return redirect(redirect_url)
+    return render_template('login.html', form=form)
