@@ -9,12 +9,14 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @main.route('/restaurant/')
 def showRestaurants():
+   #  logging.info( "Show resturants" )
   restaurants = db.session.query(Restaurant).order_by(asc(Restaurant.name))
   return render_template('restaurants.html', restaurants = restaurants)
 
 #Create a new restaurant
 @main.route('/restaurant/new/', methods=['GET','POST'])
 def newRestaurant():
+   #  logging.info( "adding resturant" )
   if request.method == 'POST':
       newRestaurant = Restaurant(name = request.form['name'])
       db.session.add(newRestaurant)
@@ -27,6 +29,7 @@ def newRestaurant():
 #Edit a restaurant
 @main.route('/restaurant/<int:restaurant_id>/edit/', methods = ['GET', 'POST'])
 def editRestaurant(restaurant_id):
+  #  logging.info( "editing resturant: " + resturant_id )
   editedRestaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
       if request.form['name']:
@@ -42,6 +45,7 @@ def editRestaurant(restaurant_id):
 def deleteRestaurant(restaurant_id):
   restaurantToDelete = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
   if request.method == 'POST':
+    #  logging.info( "deleting resturant: "+ resturant_id )
     db.session.delete(restaurantToDelete)
     flash('%s Successfully Deleted' % restaurantToDelete.name)
     db.session.commit()
@@ -55,6 +59,7 @@ def deleteRestaurant(restaurant_id):
 
 
 def showMenu(restaurant_id):
+    #  logging.info( "Show Menu" )
     restaurant = db.session.query(Restaurant).filter_by(id = restaurant_id).one()
     items = db.session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
     return render_template('menu.html', items = items, restaurant = restaurant)
@@ -67,9 +72,11 @@ def search():
         flash('Please enter a search query')
         return redirect(url_for('main.showRestaurants'))
     
+#  logging.info( "searching for: " + query )
 
     #TODO
     # query needs to be sanitised to ensure that the input field cannot be used for any kind of code injection. 
+    
 
     
     # Query the database for matching restaurants and menu items
