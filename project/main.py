@@ -67,6 +67,11 @@ def search():
         flash('Please enter a search query')
         return redirect(url_for('main.showRestaurants'))
     
+
+    #TODO
+    # query needs to be sanitised to ensure that the input field cannot be used for any kind of code injection. 
+
+    
     # Query the database for matching restaurants and menu items
     restaurants = db.session.query(Restaurant).filter(Restaurant.name.ilike(f'%{query}%')).order_by(asc(Restaurant.name)).all()
     menu_items = db.session.query(MenuItem).filter(MenuItem.name.ilike(f'%{query}%')).all()
